@@ -20,14 +20,23 @@ public class ParsedPage {
 
 	private ArrayList<HorticraftingStation> stations = new ArrayList<HorticraftingStation>();
 	public final String poeTradeID;
+	public String ign = "Unknown";
+	public final String discordTag;
 	private ArrayList<String> unknowns = new ArrayList<String>(10);
 	private int elecount = 0;
 
-	public ParsedPage(String poeTradeID) throws Exception {
+	public ParsedPage(String poeTradeID, String discordTag) throws Exception {
 		this.poeTradeID = poeTradeID;
+		this.discordTag = discordTag;
 		String url = "https://poe.trade/search/" + poeTradeID;
 		Document doc = Jsoup.connect(url).get();
 		Elements items = doc.select("tbody[class^=item]");
+
+		try {
+			ign = items.first().attr("data-ign");
+		} catch (Exception e) {
+			System.err.println("No Account name could be found for poe.trade ID : " + poeTradeID);
+		}
 
 		for (Element element : items)
 			try {
@@ -70,26 +79,27 @@ public class ParsedPage {
 						counter.containsKey(station.getCraft(i)) ? counter.get(station.getCraft(i)) + 1 : 1));
 		// Prints the shit in some random "good" order
 		ArrayList<String> toreturn = new ArrayList<String>(10);
-		boolean once = false;
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.AUGMENT, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.REMOVE, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT, maxFilter), toreturn);
-		once = once
-				| arrayAppend(computeCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT_NON, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.RANDOMISE, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.REFORGE, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.ENCHANT, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.SOCKET, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.RESISTANCE, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.CRAFTS, maxFilter), toreturn);
-		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.OTHER, maxFilter), toreturn);
+		aAC(counter, HarvestCraftCategory.AUGMENT, toreturn, maxFilter, false);
+		aAC(counter, HarvestCraftCategory.REMOVE, toreturn, maxFilter, false);
+		aAC(counter, HarvestCraftCategory.REMOVE_AUGMENT, toreturn, maxFilter, false);
+		aAC(counter, HarvestCraftCategory.REMOVE_AUGMENT_NON, toreturn, maxFilter, false);
+		aAC(counter, HarvestCraftCategory.RANDOMISE, toreturn, maxFilter, true);
+		aAC(counter, HarvestCraftCategory.REFORGE, toreturn, maxFilter, true);
+		aAC(counter, HarvestCraftCategory.ENCHANT, toreturn, maxFilter, true);
+		aAC(counter, HarvestCraftCategory.SOCKET, toreturn, maxFilter, true);
+		aAC(counter, HarvestCraftCategory.RESISTANCE, toreturn, maxFilter, false);
+		aAC(counter, HarvestCraftCategory.CRAFTS, toreturn, maxFilter, true);
+		aAC(counter, HarvestCraftCategory.OTHER, toreturn, maxFilter, true);
 
-		if (!once) {
+		if (toreturn.size() == 0) {
 			toreturn = new ArrayList<String>(1);
-			toreturn.add("Literally nothing for sale here... Are you online?\n"
+			toreturn.add("Literally nothing for sale here... Are you online? Maybe you made a typo in your id.\n"
 					+ "Maybe this is me, check out yourself: https://poe.trade/search/" + poeTradeID);
 			return toreturn;
 		}
+
+		toreturn.set(0,"``` ```"  + (discordTag.contains("Darkxell") ? "Yes, Master. Anything.\n" : "") + "\nIGN : \"@" + ign
+				+ "\" | Discord tag: <@" + discordTag + ">\n" + toreturn.get(0));
 
 		if (unknowns.size() >= 1)
 			toreturn.add(getUnknowns());
@@ -101,11 +111,22 @@ public class ParsedPage {
 		return toreturn;
 	}
 
-	private boolean arrayAppend(String element, ArrayList<String> array) {
-		if (element == null)
-			return false;
-		array.add(element);
-		return true;
+	/**
+	 * Short for ArrayAppendCategory. Computes the category using the crafts in the
+	 * counter hashmap and the maxFilter provided, and puts it in the arraylist.
+	 * 
+	 * @param glue If true, this method will append the last value in the arraylist
+	 *             instead of adding a new value.
+	 */
+	private void aAC(HashMap<HarvestCraft, Integer> counter, HarvestCraftCategory category, ArrayList<String> array,
+			CategoryFilter maxFilter, boolean glue) {
+		String el = computeCategory(counter, category, maxFilter);
+		if (el == null)
+			return;
+		if (glue)
+			array.set(array.size() - 1, array.get(array.size() - 1) + "\n" + el.trim());
+		else
+			array.add(el.trim());
 	}
 
 	/**
@@ -121,13 +142,19 @@ public class ParsedPage {
 			return null;
 		StringBuilder builder = new StringBuilder();
 		boolean header = false;
+		int currentlineweight = 0;
 		for (HarvestCraft key : counter.keySet())
 			if (key.category == category && (!key.hidden || filter == CategoryFilter.CATEGORY_ALL)) {
 				if (!header) {
 					header = true;
-					builder.append("\n\n" + category.displayName);
+					builder.append("\n\n" + category.displayName + "\n");
 				}
-				builder.append("\n[x" + counter.get(key) + "] " + key.description_alias);
+				builder.append("[x" + counter.get(key) + "] " + key.description_alias + "\t\t\t\t");
+				currentlineweight++;
+				if (currentlineweight >= 3) {
+					currentlineweight = 0;
+					builder.append("\n");
+				}
 			}
 		return header ? builder.toString() : null;
 	}

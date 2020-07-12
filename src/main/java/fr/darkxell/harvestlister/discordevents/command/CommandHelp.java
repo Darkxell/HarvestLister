@@ -9,10 +9,10 @@ public class CommandHelp extends DiscordBotCommand {
 	@Override
 	public void process(MessageReceivedEvent event) {
 		MessageChannel channel = event.getChannel();
-		channel.sendMessage("Hey @" + event.getAuthor().getAsTag()
-				+ ", I'm sending you that in your private messages!\nIf you got nothing, check if your DMs are open.")
+		channel.sendMessage("Hey <@" + event.getAuthor().getAsTag()
+				+ ">, I'm sending you that in your private messages!\nIf you got nothing, check if your DMs are open.")
 				.queue();
-		String message1 = "Hi @" + event.getAuthor().getAsTag() + ",\r\n" + "\r\n"
+		String message1 = "Hi <@" + event.getAuthor().getAsTag() + ">,\r\n" + "\r\n"
 				+ "This bot can list all the trades you have in a public stash tab, without the need of keeping a spreadsheet or a notepad updated.\r\n"
 				+ "\r\n" + "```USAGE```\r\n" + "\r\n" + "> h! list <poe.trade search id>\r\n"
 				+ "As simple as that. I will delete your post and respond with your crafting list instead.\r\n"

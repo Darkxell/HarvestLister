@@ -13,7 +13,7 @@ public enum HarvestCraft {
 	RANDOMISE_CASTER(HarvestCraftCategory.RANDOMISE, "Caster", "Randomise the numeric values of the random Caster modifiers on a Magic or Rare item"),
 	REMOVE_ADD_CASTER(HarvestCraftCategory.REMOVE_AUGMENT, "Caster", "Remove a random Caster modifier from an item and add a new Caster modifier"),
 	REFORGE_COMMON_CASTER(HarvestCraftCategory.REFORGE, "Caster", "Reforge a Rare item with new random modifiers, including a Caster modifier. Caster modifiers are more common", true),
-	AUGMENT_LUCKY_CASTER(HarvestCraftCategory.AUGMENT, "Caster l", "Augment a Magic or Rare item with a new Caster modifier with Lucky values"),
+	AUGMENT_LUCKY_CASTER(HarvestCraftCategory.AUGMENT, "Caster lucky", "Augment a Magic or Rare item with a new Caster modifier with Lucky values"),
 
 	// PHYSICAL
 	UPGRADE_PHYSICAL(HarvestCraftCategory.OTHER, "Regal including a Physical mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Physical modifier", true),
@@ -24,7 +24,7 @@ public enum HarvestCraft {
 	RANDOMISE_PHYSICAL(HarvestCraftCategory.RANDOMISE, "Physical", "Randomise the numeric values of the random Physical modifiers on a Magic or Rare item"),
 	REMOVE_ADD_PHYSICAL(HarvestCraftCategory.REMOVE_AUGMENT, "Physical", "Remove a random Physical modifier from an item and add a new Physical modifier"),
 	REFORGE_COMMON_PHYSICAL(HarvestCraftCategory.REFORGE, "Physical", "Reforge a Rare item with new random modifiers, including a Physical modifier. Physical modifiers are more common", true),
-	AUGMENT_LUCKY_PHYSICAL(HarvestCraftCategory.AUGMENT, "Physical l", "Augment a Magic or Rare item with a new Physical modifier with Lucky values"),
+	AUGMENT_LUCKY_PHYSICAL(HarvestCraftCategory.AUGMENT, "Physical lucky", "Augment a Magic or Rare item with a new Physical modifier with Lucky values"),
 
 	// FIRE
 	UPGRADE_FIRE(HarvestCraftCategory.OTHER, "Regal including a Fire mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Fire modifier", true),
@@ -35,7 +35,7 @@ public enum HarvestCraft {
 	RANDOMISE_FIRE(HarvestCraftCategory.RANDOMISE, "Fire", "Randomise the numeric values of the random Fire modifiers on a Magic or Rare item"),
 	REMOVE_ADD_FIRE(HarvestCraftCategory.REMOVE_AUGMENT, "Fire", "Remove a random Fire modifier from an item and add a new Fire modifier"),
 	REFORGE_COMMON_FIRE(HarvestCraftCategory.REFORGE, "Fire", "Reforge a Rare item with new random modifiers, including a Fire modifier. Fire modifiers are more common", true),
-	AUGMENT_LUCKY_FIRE(HarvestCraftCategory.AUGMENT, "Fire l", "Augment a Magic or Rare item with a new Fire modifier with Lucky values"),
+	AUGMENT_LUCKY_FIRE(HarvestCraftCategory.AUGMENT, "Fire lucky", "Augment a Magic or Rare item with a new Fire modifier with Lucky values"),
 
 	// ATTACK
 	UPGRADE_ATTACK(HarvestCraftCategory.OTHER, "Regal including an Attack mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Attack modifier", true),
@@ -46,7 +46,7 @@ public enum HarvestCraft {
 	RANDOMISE_ATTACK(HarvestCraftCategory.RANDOMISE, "Attack", "Randomise the numeric values of the random Attack modifiers on a Magic or Rare item"),
 	REMOVE_ADD_ATTACK(HarvestCraftCategory.REMOVE_AUGMENT, "Attack", "Remove a random Attack modifier from an item and add a new Attack modifier"),
 	REFORGE_COMMON_ATTACK(HarvestCraftCategory.REFORGE, "Attack", "Reforge a Rare item with new random modifiers, including a Attack modifier. Attack modifiers are more common", true),
-	AUGMENT_LUCKY_ATTACK(HarvestCraftCategory.AUGMENT, "Attack l", "Augment an item with a new Attack modifier with Lucky values"),
+	AUGMENT_LUCKY_ATTACK(HarvestCraftCategory.AUGMENT, "Attack lucky", "Augment an item with a new Attack modifier with Lucky values"),
 
 	// LIFE
 	UPGRADE_LIFE(HarvestCraftCategory.OTHER, "Regal including a Life mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Life modifier", true),
@@ -57,7 +57,7 @@ public enum HarvestCraft {
 	RANDOMISE_LIFE(HarvestCraftCategory.RANDOMISE, "Life", "Randomise the numeric values of the random Life modifiers on a Magic or Rare item"),
 	REMOVE_ADD_LIFE(HarvestCraftCategory.REMOVE_AUGMENT, "Life", "Remove a random Life modifier from an item and add a new Life modifier"),
 	REFORGE_COMMON_LIFE(HarvestCraftCategory.REFORGE, "Life", "Reforge a Rare item with new random modifiers, including a Life modifier. Life modifiers are more common", true),
-	AUGMENT_LUCKY_LIFE(HarvestCraftCategory.AUGMENT, "Life l", "Augment an item with a new Life modifier with Lucky values"),
+	AUGMENT_LUCKY_LIFE(HarvestCraftCategory.AUGMENT, "Life lucky", "Augment an item with a new Life modifier with Lucky values"),
 
 	// COLD
 	UPGRADE_COLD(HarvestCraftCategory.OTHER, "Regal including a Cold mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Cold modifier", true),
@@ -68,7 +68,7 @@ public enum HarvestCraft {
 	RANDOMISE_COLD(HarvestCraftCategory.RANDOMISE, "Cold", "Randomise the numeric values of the random Cold modifiers on a Magic or Rare item"),
 	REMOVE_ADD_COLD(HarvestCraftCategory.REMOVE_AUGMENT, "Cold", "Remove a random Cold modifier from an item and add a new Cold modifier"),
 	REFORGE_COMMON_COLD(HarvestCraftCategory.REFORGE, "Cold", "Reforge a Rare item with new random modifiers, including a Cold modifier. Cold modifiers are more common", true),
-	AUGMENT_LUCKY_COLD(HarvestCraftCategory.AUGMENT, "Cold l", "Augment an item with a new Cold modifier with Lucky values"),
+	AUGMENT_LUCKY_COLD(HarvestCraftCategory.AUGMENT, "Cold lucky", "Augment an item with a new Cold modifier with Lucky values"),
 
 	// SPEED
 	UPGRADE_SPEED(HarvestCraftCategory.OTHER, "Regal including a Speed mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Speed modifier", true),
@@ -79,7 +79,7 @@ public enum HarvestCraft {
 	RANDOMISE_SPEED(HarvestCraftCategory.RANDOMISE, "Speed", "Randomise the numeric values of the random Speed modifiers on a Magic or Rare item"),
 	REMOVE_ADD_SPEED(HarvestCraftCategory.REMOVE_AUGMENT, "Speed", "Remove a random Speed modifier from an item and add a new Speed modifier"),
 	REFORGE_COMMON_SPEED(HarvestCraftCategory.REFORGE, "Speed", "Reforge a Rare item with new random modifiers, including a Speed modifier. Speed modifiers are more common", true),
-	AUGMENT_LUCKY_SPEED(HarvestCraftCategory.AUGMENT, "Speed l", "Augment an item with a new Speed modifier with Lucky values"),
+	AUGMENT_LUCKY_SPEED(HarvestCraftCategory.AUGMENT, "Speed lucky", "Augment an item with a new Speed modifier with Lucky values"),
 
 	// DEFENCE
 	UPGRADE_DEFENCE(HarvestCraftCategory.OTHER, "Regal including a Defence mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Defence modifier", true),
@@ -90,7 +90,7 @@ public enum HarvestCraft {
 	RANDOMISE_DEFENCE(HarvestCraftCategory.RANDOMISE, "Defence", "Randomise the numeric values of the random Defence modifiers on a Magic or Rare item"),
 	REMOVE_ADD_DEFENCE(HarvestCraftCategory.REMOVE_AUGMENT, "Defence", "Remove a random Defence modifier from an item and add a new Defence modifier"),
 	REFORGE_COMMON_DEFENCE(HarvestCraftCategory.REFORGE, "Defence", "Reforge a Rare item with new random modifiers, including a Defence modifier. Defence modifiers are more common", true),
-	AUGMENT_LUCKY_DEFENCE(HarvestCraftCategory.AUGMENT, "Defence l", "Augment an item with a new Defence modifier with Lucky values"),
+	AUGMENT_LUCKY_DEFENCE(HarvestCraftCategory.AUGMENT, "Defence lucky", "Augment an item with a new Defence modifier with Lucky values"),
 
 	// LIGHTNING
 	UPGRADE_LIGHTNING(HarvestCraftCategory.OTHER, "Regal including a Lightning mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Lightning modifier", true),
@@ -101,7 +101,7 @@ public enum HarvestCraft {
 	RANDOMISE_LIGHTNING(HarvestCraftCategory.RANDOMISE, "Lightning", "Randomise the numeric values of the random Lightning modifiers on a Magic or Rare item"),
 	REMOVE_ADD_LIGHTNING(HarvestCraftCategory.REMOVE_AUGMENT, "Lightning", "Remove a random Lightning modifier from an item and add a new Lightning modifier"),
 	REFORGE_COMMON_LIGHTNING(HarvestCraftCategory.REFORGE, "Lightning", "Reforge a Rare item with new random modifiers, including a Lightning modifier. Lightning modifiers are more common", true),
-	AUGMENT_LUCKY_LIGHTNING(HarvestCraftCategory.AUGMENT, "Lightning l", "Augment an item with a new Lightning modifier with Lucky values"),
+	AUGMENT_LUCKY_LIGHTNING(HarvestCraftCategory.AUGMENT, "Lightning lucky", "Augment an item with a new Lightning modifier with Lucky values"),
 
 	// CHAOS
 	UPGRADE_CHAOS(HarvestCraftCategory.OTHER, "Regal including a Chaos mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Chaos modifier", true),
@@ -112,7 +112,7 @@ public enum HarvestCraft {
 	RANDOMISE_CHAOS(HarvestCraftCategory.RANDOMISE, "Chaos", "Randomise the numeric values of the random Chaos modifiers on a Magic or Rare item"),
 	REMOVE_ADD_CHAOS(HarvestCraftCategory.REMOVE_AUGMENT, "Chaos", "Remove a random Chaos modifier from an item and add a new Chaos modifier"),
 	REFORGE_COMMON_CHAOS(HarvestCraftCategory.REFORGE, "Chaos", "Reforge a Rare item with new random modifiers, including a Chaos modifier. Chaos modifiers are more common", true),
-	AUGMENT_LUCKY_CHAOS(HarvestCraftCategory.AUGMENT, "Chaos l", "Augment an item with a new Chaos modifier with Lucky values"),
+	AUGMENT_LUCKY_CHAOS(HarvestCraftCategory.AUGMENT, "Chaos lucky", "Augment an item with a new Chaos modifier with Lucky values"),
 
 	// CRITICAL
 	UPGRADE_CRITICAL(HarvestCraftCategory.OTHER, "Regal including a Critical mod", "Reforge a Normal or Magic item as a Rare item with random modifiers, including a Critical modifier"),
@@ -123,7 +123,7 @@ public enum HarvestCraft {
 	RANDOMISE_CRITICAL(HarvestCraftCategory.RANDOMISE, "Critical", "Randomise the numeric values of the random Critical modifiers on a Magic or Rare item"),
 	REMOVE_ADD_CRITICAL(HarvestCraftCategory.REMOVE_AUGMENT, "Critical", "Remove a random Critical modifier from an item and add a new Critical modifier"),
 	REFORGE_COMMON_CRITICAL(HarvestCraftCategory.REFORGE, "Critical", "Reforge a Rare item with new random modifiers, including a Critical modifier. Critical modifiers are more common"),
-	AUGMENT_LUCKY_CRITICAL(HarvestCraftCategory.AUGMENT, "Critical l", "Augment an item with a new Critical modifier with lucky values"),
+	AUGMENT_LUCKY_CRITICAL(HarvestCraftCategory.AUGMENT, "Critical lucky", "Augment an item with a new Critical modifier with lucky values"),
 
 	// INFLUENCE
 	REMOVE_ADD_NON_INFLUENCE(HarvestCraftCategory.REMOVE_AUGMENT_NON, "Influence", "Remove a random non-Influence modifier from an item and add a new Influence modifier"),
@@ -131,7 +131,7 @@ public enum HarvestCraft {
 	REMOVE_INFLUENCE(HarvestCraftCategory.REMOVE, "Influence", "Remove a random Influence modifier from an item"),
 	REMOVE_ADD_INFLUENCE(HarvestCraftCategory.REMOVE_AUGMENT, "Influence", "Remove a random Influence modifier from an item and add a new Influence modifier"),
 	REFORGE_COMMON_INFLUENCE(HarvestCraftCategory.REFORGE, "Influence", "Reforge a Rare item with new random modifiers, including an Influence modifier. Influence modifiers are more common"),
-	AUGMENT_LUCKY_INFLUENCE(HarvestCraftCategory.AUGMENT, "Influence l", "Augment an item with a new Influence modifier with Lucky values"),
+	AUGMENT_LUCKY_INFLUENCE(HarvestCraftCategory.AUGMENT, "Influence lucky", "Augment an item with a new Influence modifier with Lucky values"),
 	ADD_INFLUENCE_WEAPON(HarvestCraftCategory.OTHER, "Add Influence to Weapon", "Add a random Influence to a Normal, Magic or Rare Weapon that isn't influenced"),
 	ADD_INFLUENCE_ARMOUR(HarvestCraftCategory.OTHER, "Add Influence to Armour", "Add a random Influence to Normal, Magic or Rare Armour that isn't influenced"),
 	ADD_INFLUENCE_JEWELLERY(HarvestCraftCategory.OTHER, "Add Influence to Jewellery", "Add a random Influence to Normal, Magic or Rare Jewellery that isn't influenced"),

@@ -9,8 +9,8 @@ public enum HarvestCraftCategory {
 	REMOVE_AUGMENT_NON("**REMOVE+AUGMENT NON** :annulment: :exalt: :exclamation:",CategoryFilter.CATEGORY_FINE),
 	REFORGE("**REFORGE** :chaos:",CategoryFilter.CATEGORY_FINER),
 	ENCHANT("**ENCHANT** :regret:",CategoryFilter.CATEGORY_DEFAULT),
-	SOCKET("**SOCKET** :chrome: :jeweller: :fusing:",CategoryFilter.CATEGORY_FINE),
-	RESISTANCE("**RESISTANCE SWAPS** :arrows_counterclockwise:",CategoryFilter.CATEGORY_FINE),
+	SOCKET("**SOCKET** :chrome: :jeweller: :fusing:",CategoryFilter.CATEGORY_DEFAULT),
+	RESISTANCE("**RESISTANCE SWAPS** :arrows_counterclockwise:",CategoryFilter.CATEGORY_DEFAULT),
 	CRAFTS("**OTHER CRAFTS** :mirror:",CategoryFilter.CATEGORY_DEFAULT),
 
 	OTHER("**OTHER** :letouc:",CategoryFilter.CATEGORY_DEFAULT);

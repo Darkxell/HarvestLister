@@ -21,7 +21,7 @@ public class MessageListener extends ListenerAdapter {
 		if (command != null) {
 			command.process(event);
 		} else if (event.getMessage().getContentRaw().startsWith("h!")) {
-			event.getChannel().sendMessage("<@" + event.getAuthor().getAsTag()
+			event.getChannel().sendMessage("<@" + event.getAuthor().getId()
 					+ "> This doesn't seem to be a valid command.\nTry this:\n```h! help```").queue();
 		}
 

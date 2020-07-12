@@ -22,12 +22,14 @@ public class ParsedPage {
 	public final String poeTradeID;
 	public String ign = "Unknown";
 	public final String discordTag;
+	public final String discordID;
 	private ArrayList<String> unknowns = new ArrayList<String>(10);
 	private int elecount = 0;
 
-	public ParsedPage(String poeTradeID, String discordTag) throws Exception {
+	public ParsedPage(String poeTradeID, String discordTag, String discordID) throws Exception {
 		this.poeTradeID = poeTradeID;
 		this.discordTag = discordTag;
+		this.discordID = discordID;
 		String url = "https://poe.trade/search/" + poeTradeID;
 		Document doc = Jsoup.connect(url).get();
 		Elements items = doc.select("tbody[class^=item]");
@@ -98,8 +100,10 @@ public class ParsedPage {
 			return toreturn;
 		}
 
-		toreturn.set(0,"``` ```"  + (discordTag.contains("Darkxell") ? "Yes, Master. Anything.\n" : "") + "\nIGN : \"@" + ign
-				+ "\" | Discord tag: <@" + discordTag + ">\n" + toreturn.get(0));
+		toreturn.set(0,
+				"```" + (discordTag.contains("Darkxell") ? "Yes, Master. Anything.\n" : "") + "\nIGN : \"@"
+						+ ign + "\" | Discord tag: @" + discordTag + " | https://poe.trade/search/" + poeTradeID
+						+ "```\n" + toreturn.get(0));
 
 		if (unknowns.size() >= 1)
 			toreturn.add(getUnknowns());
@@ -147,7 +151,7 @@ public class ParsedPage {
 			if (key.category == category && (!key.hidden || filter == CategoryFilter.CATEGORY_ALL)) {
 				if (!header) {
 					header = true;
-					builder.append("\n\n" + category.displayName + "\n");
+					builder.append("\n:blue_square: " + category.displayName + "\n");
 				}
 				builder.append("[x" + counter.get(key) + "] " + key.description_alias + "\t\t\t\t");
 				currentlineweight++;

@@ -18,7 +18,7 @@ public class CommandList extends DiscordBotCommand {
 		String[] split = m.split(" ");
 		if (split.length == 3) {
 			boolean success = sendParsedPage(split[2], CategoryFilter.CATEGORY_DEFAULT, channel,
-					event.getAuthor().getAsTag());
+					event.getAuthor().getAsTag(), event.getAuthor().getId());
 			if (success)
 				deleteAndWarn(event);
 		} else if (split.length == 4) {
@@ -26,14 +26,15 @@ public class CommandList extends DiscordBotCommand {
 			boolean hassent = false;
 			for (CategoryFilter cf : CategoryFilter.values())
 				if (grain.toLowerCase().trim().equals(cf.name)) {
-					boolean success = sendParsedPage(split[2], cf, channel, event.getAuthor().getAsTag());
+					boolean success = sendParsedPage(split[2], cf, channel, event.getAuthor().getAsTag(),
+							event.getAuthor().getId());
 					if (success)
 						deleteAndWarn(event);
 					hassent = true;
 					break;
 				}
 			if (!hassent) {
-				StringBuffer sb = new StringBuffer("<@" + event.getAuthor().getAsTag() + "> \"" + split[3]
+				StringBuffer sb = new StringBuffer("<@" + event.getAuthor().getId() + "> \"" + split[3]
 						+ "\" isn't a valid filter level. You may try:\n```");
 				boolean firstappend = true;
 				for (CategoryFilter cf : CategoryFilter.values()) {
@@ -47,22 +48,27 @@ public class CommandList extends DiscordBotCommand {
 				channel.sendMessage(sb.toString()).queue();
 			}
 		} else {
-			channel.sendMessage("<@" + event.getAuthor().getAsTag()
+			channel.sendMessage("<@" + event.getAuthor().getId()
 					+ "> Make sure you include a valid poe.trade search ID.\nTry this:\n```h! list <poe.trade search id>```")
 					.queue();
 		}
 	}
 
+	private static long lastBreakMili = 0;
+
 	private static boolean sendParsedPage(String poetradeID, CategoryFilter maxFilter, MessageChannel channel,
-			String discordTag) {
+			String discordTag, String discordID) {
 		try {
-			ParsedPage page = new ParsedPage(poetradeID, discordTag);
+			ParsedPage page = new ParsedPage(poetradeID, discordTag, discordID);
 			ArrayList<String> al = page.toStringArray(maxFilter);
 			sendMessageList(channel, al);
 			return al.size() >= 2;
 		} catch (Exception e) {
-			channel.sendMessage("<@Darkxell#1655>\nYour bot's boken, dude. Error details:\n" + e.getClass() + "\n"
-					+ e.getLocalizedMessage()).queue();
+			if (System.currentTimeMillis() >= lastBreakMili + 1000 * 60 * 60 /* 60 minutes warning cooldown */) {
+				lastBreakMili = System.currentTimeMillis();
+				channel.sendMessage("<@208302387918536704>\nYour bot's boken, dude. Error details:\n" + e.getClass()
+						+ "\n" + e.getLocalizedMessage()).queue();
+			}
 			return false;
 		}
 	}

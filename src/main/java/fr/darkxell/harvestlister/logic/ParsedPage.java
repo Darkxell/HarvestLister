@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import fr.darkxell.harvestlister.model.CategoryFilter;
 import fr.darkxell.harvestlister.model.HarvestCraft;
 import fr.darkxell.harvestlister.model.HarvestCraftCategory;
 import fr.darkxell.harvestlister.model.HorticraftingStation;
@@ -60,13 +61,7 @@ public class ParsedPage {
 			}
 	}
 
-	/**
-	 * Gets a clean human readable print of this parsed page. The output is ready to
-	 * be pasted in a discord channel.
-	 */
-	@Override
-	public String toString() {
-		StringBuilder toreturn = new StringBuilder();
+	public ArrayList<String> toStringArray(CategoryFilter maxFilter) {
 		// Counts the shit
 		HashMap<HarvestCraft, Integer> counter = new HashMap<HarvestCraft, Integer>(250);
 		for (HorticraftingStation station : stations)
@@ -74,52 +69,72 @@ public class ParsedPage {
 				counter.put(station.getCraft(i), new Integer(
 						counter.containsKey(station.getCraft(i)) ? counter.get(station.getCraft(i)) + 1 : 1));
 		// Prints the shit in some random "good" order
-		boolean pa = false;
-		pa = pa | appendCategory(counter, HarvestCraftCategory.AUGMENT, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.REMOVE, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.RANDOMISE, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT_NON, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.REFORGE, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.ENCHANT, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.SOCKET, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.RESISTANCE, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.CRAFTS, toreturn);
-		pa = pa | appendCategory(counter, HarvestCraftCategory.OTHER, toreturn);
+		ArrayList<String> toreturn = new ArrayList<String>(10);
+		boolean once = false;
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.AUGMENT, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.REMOVE, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT, maxFilter), toreturn);
+		once = once
+				| arrayAppend(computeCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT_NON, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.RANDOMISE, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.REFORGE, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.ENCHANT, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.SOCKET, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.RESISTANCE, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.CRAFTS, maxFilter), toreturn);
+		once = once | arrayAppend(computeCategory(counter, HarvestCraftCategory.OTHER, maxFilter), toreturn);
 
-		if (!pa) {
-			toreturn.append(
-					"Literally nothing for sale here... Are you online?\nMaybe this is me, check out yourself: https://poe.trade/search/"
-							+ poeTradeID);
+		if (!once) {
+			toreturn = new ArrayList<String>(1);
+			toreturn.add("Literally nothing for sale here... Are you online?\n"
+					+ "Maybe this is me, check out yourself: https://poe.trade/search/" + poeTradeID);
+			return toreturn;
 		}
 
 		if (unknowns.size() >= 1)
-			toreturn.append(getUnknowns());
+			toreturn.add(getUnknowns());
 
 		if (elecount >= 99)
-			toreturn.append("\n And maybe more, more than 100 stations were found!");
+			toreturn.set(toreturn.size() - 1,
+					toreturn.get(toreturn.size() - 1) + "\n And maybe more, more than 100 stations were found!");
 
-		return toreturn.toString();
+		return toreturn;
 	}
 
-	/** @return True if this appended at least one line. */
-	private static boolean appendCategory(HashMap<HarvestCraft, Integer> counter, HarvestCraftCategory category,
-			StringBuilder output) {
+	private boolean arrayAppend(String element, ArrayList<String> array) {
+		if (element == null)
+			return false;
+		array.add(element);
+		return true;
+	}
+
+	/**
+	 * @return null if there's nothing in this category, otherwise a human readable
+	 *         String
+	 * @param showhidden True if you want to include hidden crafts. Hidden crafts
+	 *                   are the extreme low value and these that can't be traded.
+	 *                   Should probably be false by default.
+	 */
+	private static String computeCategory(HashMap<HarvestCraft, Integer> counter, HarvestCraftCategory category,
+			CategoryFilter filter) {
+		if (category.filter.level < filter.level)
+			return null;
+		StringBuilder builder = new StringBuilder();
 		boolean header = false;
 		for (HarvestCraft key : counter.keySet())
-			if (key.category == category && !key.hidden) {
+			if (key.category == category && (!key.hidden || filter == CategoryFilter.CATEGORY_ALL)) {
 				if (!header) {
 					header = true;
-					output.append("\n\n" + category.displayName + "\n");
+					builder.append("\n\n" + category.displayName);
 				}
-				output.append("\n[x" + counter.get(key) + "] " + key.description_alias);
+				builder.append("\n[x" + counter.get(key) + "] " + key.description_alias);
 			}
-		return header;
+		return header ? builder.toString() : null;
 	}
 
-	public String getUnknowns() {
+	private String getUnknowns() {
 		StringBuilder toreturn = new StringBuilder();
-		toreturn.append("\n\nError! There are unrecognised crafts available too: ");
+		toreturn.append("\n\n**Error!** There are unrecognised crafts available too: ");
 		for (int i = 0; i < unknowns.size(); i++) {
 			toreturn.append("\n");
 			toreturn.append(unknowns.get(i));
@@ -127,7 +142,26 @@ public class ParsedPage {
 		return toreturn.toString();
 	}
 
-	/** Calls this.toString() and puts the content to your clipboard. */
+	/**
+	 * Gets a clean human readable print of this parsed page. The output is ready to
+	 * be pasted in a discord channel.<br/>
+	 * This method uses <code>CategoryFilter.CATEGORY_FINER</code> filter, lisling
+	 * all crafts that can be traded.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		ArrayList<String> cat = this.toStringArray(CategoryFilter.CATEGORY_FINER);
+		for (String c : cat)
+			builder.append(c);
+		return builder.toString();
+	}
+
+	/**
+	 * Calls <code>this.toString()</code> and puts the content to your clipboard.
+	 * 
+	 * @deprecated Use the discord bot instead.
+	 */
 	@Deprecated
 	public String clipboard() {
 		String clip = this.toString();

@@ -18,8 +18,9 @@ import fr.darkxell.harvestlister.model.HorticraftingStation;
 public class ParsedPage {
 
 	private ArrayList<HorticraftingStation> stations = new ArrayList<HorticraftingStation>();
-	private final String poeTradeID;
+	public final String poeTradeID;
 	private ArrayList<String> unknowns = new ArrayList<String>(10);
+	private int elecount = 0;
 
 	public ParsedPage(String poeTradeID) throws Exception {
 		this.poeTradeID = poeTradeID;
@@ -29,6 +30,7 @@ public class ParsedPage {
 
 		for (Element element : items)
 			try {
+				elecount++;
 				if (!element.attr("data-name").equals("Horticrafting Station"))
 					continue;
 				Elements mods = element.select("ul[class^=mods]").select("li");
@@ -65,7 +67,6 @@ public class ParsedPage {
 	@Override
 	public String toString() {
 		StringBuilder toreturn = new StringBuilder();
-		toreturn.append("Page: https://poe.trade/search/" + poeTradeID);
 		// Counts the shit
 		HashMap<HarvestCraft, Integer> counter = new HashMap<HarvestCraft, Integer>(250);
 		for (HorticraftingStation station : stations)
@@ -73,25 +74,36 @@ public class ParsedPage {
 				counter.put(station.getCraft(i), new Integer(
 						counter.containsKey(station.getCraft(i)) ? counter.get(station.getCraft(i)) + 1 : 1));
 		// Prints the shit in some random "good" order
-		appendCategory(counter, HarvestCraftCategory.AUGMENT, toreturn);
-		appendCategory(counter, HarvestCraftCategory.REMOVE, toreturn);
-		appendCategory(counter, HarvestCraftCategory.RANDOMISE, toreturn);
-		appendCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT, toreturn);
-		appendCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT_NON, toreturn);
-		appendCategory(counter, HarvestCraftCategory.REFORGE, toreturn);
-		appendCategory(counter, HarvestCraftCategory.ENCHANT, toreturn);
-		appendCategory(counter, HarvestCraftCategory.SOCKET, toreturn);
-		appendCategory(counter, HarvestCraftCategory.RESISTANCE, toreturn);
-		appendCategory(counter, HarvestCraftCategory.CRAFTS, toreturn);
-		appendCategory(counter, HarvestCraftCategory.OTHER, toreturn);
+		boolean pa = false;
+		pa = pa | appendCategory(counter, HarvestCraftCategory.AUGMENT, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.REMOVE, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.RANDOMISE, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.REMOVE_AUGMENT_NON, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.REFORGE, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.ENCHANT, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.SOCKET, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.RESISTANCE, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.CRAFTS, toreturn);
+		pa = pa | appendCategory(counter, HarvestCraftCategory.OTHER, toreturn);
+
+		if (!pa) {
+			toreturn.append(
+					"Literally nothing for sale here... Are you online?\nMaybe this is me, check out yourself: https://poe.trade/search/"
+							+ poeTradeID);
+		}
 
 		if (unknowns.size() >= 1)
 			toreturn.append(getUnknowns());
 
+		if (elecount >= 99)
+			toreturn.append("\n And maybe more, more than 100 stations were found!");
+
 		return toreturn.toString();
 	}
 
-	private static void appendCategory(HashMap<HarvestCraft, Integer> counter, HarvestCraftCategory category,
+	/** @return True if this appended at least one line. */
+	private static boolean appendCategory(HashMap<HarvestCraft, Integer> counter, HarvestCraftCategory category,
 			StringBuilder output) {
 		boolean header = false;
 		for (HarvestCraft key : counter.keySet())
@@ -102,6 +114,7 @@ public class ParsedPage {
 				}
 				output.append("\n[x" + counter.get(key) + "] " + key.description_alias);
 			}
+		return header;
 	}
 
 	public String getUnknowns() {
@@ -115,6 +128,7 @@ public class ParsedPage {
 	}
 
 	/** Calls this.toString() and puts the content to your clipboard. */
+	@Deprecated
 	public String clipboard() {
 		String clip = this.toString();
 		StringSelection stringSelection = new StringSelection(clip);
